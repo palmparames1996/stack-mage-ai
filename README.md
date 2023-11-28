@@ -1,7 +1,10 @@
-# kp-sugar-data-pipeline
+# Mage.ai
 ## Local
 ### Project management
-1. get local.env from owner to project directory
+1. get local.env from owner to project directory and run genarate .env
+```
+make local-config
+```
 2. run start project
 ```
 make local-start
