@@ -1,0 +1,26 @@
+version: '1'
+services:
+  pg-local:
+    build: 
+      context: .
+      dockerfile: ./dockerfile.pg
+    restart: always
+    ports:
+      - 5432:${POSTGRES_PORT}
+    env_file:
+      - local.env
+    volumes:
+      - ./postgres/data:/var/lib/postgresql/data
+  orchestration:
+    build: 
+      context: .
+      dockerfile: ./dockerfile.mage
+    depends_on:
+      - ${POSTGRES_HOST}
+    ports:
+      - 6789:6789
+    volumes:
+      - ./mage-ai:/home/src
+    environment:
+      - REQUIRE_USER_AUTHENTICATION=1
+      - MAGE_DATABASE_CONNECTION_URL=postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
